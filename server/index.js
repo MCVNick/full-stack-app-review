@@ -22,5 +22,10 @@ massive(CONNECTION_STRING) .then(db => {
     app.listen(port, console.log('The server is running on port', port))
 })
 
+// authentication
 app.post("/auth/register", ctrl.register)
 app.post('/auth/login', ctrl.login)
+app.post('/auth/logout', ctrl.logout)
+
+// user data
+app.get('/api/user', ctrl.getUser)

@@ -1,0 +1,32 @@
+.rainbow {
+    font-size: 30px;
+    color: red;
+    animation-name: rainbow;
+    animation-duration: 10s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+@keyframes rainbow {
+    14.3% {
+        color: orange;
+    }
+    28.6% {
+        color: yellow;
+    }
+    42.9% {
+        color: green;
+    }
+    57.2% {
+        color: blue;
+    }
+    71.5% {
+        color: indigo;
+    }
+    85.8% {
+        color: violet;
+    }
+    100% {
+        color: red;
+    }
+}

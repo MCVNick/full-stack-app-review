@@ -1,0 +1,15 @@
+.turnRedAndBack {
+    animation: pulse 1s linear
+}
+
+@keyframes pulse {
+    0% {
+        color: black;
+    }
+    50% {
+        color: red;
+    }
+    100% {
+        color: black;
+    }
+}

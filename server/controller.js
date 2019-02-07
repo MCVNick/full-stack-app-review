@@ -7,6 +7,13 @@ module.exports = {
         const db = req.app.get('db')
         const { session } = req
 
+        let user = await db.user.check_user({username: username})
+        user = user[0]
+        // console.log(user)
+        if(user) {
+            return res.status(400).send('User already created')
+        }
+
         const salt = bcrypt.genSaltSync(10);
         const hash = bcrypt.hashSync(password, salt)
         // console.log({hash})
@@ -41,6 +48,20 @@ module.exports = {
         }
         else {
             res.status(401).send('Incorrect password')
+        }
+    },
+    logout: (req, res) => {
+        req.session.destroy()
+        res.sendStatus(200)
+    },
+    getUser: (req, res) => {
+        const {user} = req.session
+        // console.log(req.session)
+
+        if (user) {
+            res.send(user)
+        } else {
+            res.status(401).send('Forbidden')
         }
     }
 }

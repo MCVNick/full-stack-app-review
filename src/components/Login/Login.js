@@ -16,19 +16,42 @@ class Login extends Component {
         this.login = this.login.bind(this)
     }
 
+    componentDidMount() {
+        this.redirectToPrivateContent()
+    }
+
     handleChange(prop, val) {
         this.setState({
-            [prop]: val
+            [prop]: val,
+            error: false,
+            errorMSG: '',
+            success: false,
+            successMSG: ''
         })
     }
 
     register = () => {
         const { username, password } = this.state
-        axios.post('/auth/register', { username, password })
-            .then(res => {
-                // console.log(res)
-                this.props.updateUser(res.data)
+        if(username && password && username.length <= 20 && password <= 20) {
+            axios.post('/auth/register', { username, password })
+                .then(res => {
+                    // console.log(res)
+                    this.props.updateUser(res.data)
+                    this.props.history.push('/private')
+                })
+                .catch(error => {
+                    this.setState({
+                        error: true,
+                        errorMSG: error.response.data
+                    })
+                })
+        }
+        else {
+            this.setState({
+                error: true,
+                errorMSG: 'Username and password not valid'
             })
+        }
     }
 
     login() {
@@ -37,6 +60,7 @@ class Login extends Component {
             .then(res => {
                 // console.log(res)
                 this.props.updateUser(res.data)
+                this.props.history.push('/private')
             })
             .catch(error => {
                 this.setState({
@@ -46,9 +70,29 @@ class Login extends Component {
             })
     }
 
+    redirectToPrivateContent() {
+        const { id } = this.props;
+        
+        if(id) {
+            //boot to other page
+            this.props.history.push('/private')
+        } else {
+            //double check sessions
+            axios.get('/api/user')
+            .then(res => {
+                //boot to other page
+                this.props.updateUser(res.data)
+                this.props.history.push('/private')
+            })
+            .catch(error => {
+                //don't move
+            })
+        }
+    }
+
     render() {
         const { username, password } = this.state
-        console.log(this.props)
+        // console.log(this.props)
 
         return (
             <div className="Login">
@@ -68,7 +112,7 @@ class Login extends Component {
                 <button onClick={this.register}>Register</button>
                 {
                     this.state.error ?
-                        <p>
+                        <p className='turnRedAndBack'>
                             {this.state.errorMSG}
                         </p>
                         :
