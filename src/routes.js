@@ -6,6 +6,6 @@ import Private from './components/Private/Private'
 export default (
     <Switch>
         <Route exact path='/' component={Login}/>
-        <Route path='/private' Private={Private}/>
+        <Route path='/private' component={Private}/>
     </Switch>
 )
